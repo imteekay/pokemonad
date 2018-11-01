@@ -4,15 +4,28 @@
             [clojure.string :as string]))
 
 (defn -main []
-  (pprint/pprint pokemons/pokedex)
+  (println
+    (string/join "\n\n"
+      (map
+        (fn [type]
+          (str
+            "\""
+            type
+            " pokemons\": "
+            (string/join
+              ", "
+              (map
+                #(:name %)
+                (filter
+                  #(= type (:type %))
+                  pokemons/pokedex)))))
+        (pokemons/types pokemons/pokedex))))
+
+  (println)
 
   (println
     (str
-      "Psychic pokemons: "
+      "All types: "
       (string/join
         ", "
-        (map
-          #(:name %)
-          (filter
-            #(= "Psychic" (:type %))
-            pokemons/pokedex))))))
+        (pokemons/types pokemons/pokedex)))))
