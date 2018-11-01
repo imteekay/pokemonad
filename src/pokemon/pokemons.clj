@@ -152,3 +152,10 @@
    {:id 149 :name "Dragonite"  :type "Dragon"   :evolution-id 149}
    {:id 150 :name "Mewtwo"     :type "Psychic"  :evolution-id 150}
    {:id 151 :name "Mew"        :type "Psychic"  :evolution-id 151}])
+
+(defn types
+  [pokemons]
+  (distinct
+    (map
+      #(:type %)
+      pokemons)))
