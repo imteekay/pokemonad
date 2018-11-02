@@ -2,23 +2,41 @@
   (:require [pokemon.pokemons :as pokemons]
             [clojure.string :as string]))
 
+(defn filter-by
+  [type pokemons]
+  (filter
+    #(= type (:type %))
+    pokemons))
+
+(defn get-pokemons-names
+  [pokemons]
+  (map
+    #(:name %)
+    pokemons))
+
+(defn visualize-pokemons-by-type
+  [type pokemons-string]
+  (str
+    "\""
+    type
+    " pokemons\": "
+    pokemons-string))
+
+(defn pokemons-by-type
+  [type pokemons]
+  (->> pokemons
+    (filter-by type)
+    (get-pokemons-names)
+    (string/join ", ")
+    (visualize-pokemons-by-type type)))
+
 (defn -main []
-  (println
-    (string/join "\n\n"
-      (map
-        (fn [type]
-          (str
-            "\""
-            type
-            " pokemons\": "
-            (string/join
-              ", "
-              (map
-                #(:name %)
-                (filter
-                  #(= type (:type %))
-                  pokemons/pokedex)))))
-        (pokemons/types pokemons/pokedex))))
+  (loop [types    (pokemons/types pokemons/pokedex)
+         pokemons pokemons/pokedex]
+    (when (not-empty types)
+      (let [current-type (first types)]
+        (println (pokemons-by-type current-type pokemons)))
+      (recur (rest types) pokemons)))
 
   (println)
 
