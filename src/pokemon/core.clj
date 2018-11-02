@@ -8,12 +8,6 @@
     #(= type (:type %))
     pokemons))
 
-(defn get-pokemons-names
-  [pokemons]
-  (map
-    #(:name %)
-    pokemons))
-
 (defn visualize-pokemons-by-type
   [type pokemons-string]
   (str
@@ -26,7 +20,7 @@
   [type pokemons]
   (->> pokemons
     (filter-by type)
-    (get-pokemons-names)
+    (map :name)
     (string/join ", ")
     (visualize-pokemons-by-type type)))
 
