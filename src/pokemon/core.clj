@@ -29,6 +29,20 @@
   (println)
 
   (println
+    (string/join
+      "\n\n"
+      (let [pokemons-by-type (group-by :type pokemons/pokedex)]
+        (for [[type pokemons] pokemons-by-type]
+          (str
+            type
+            ": "
+            (clojure.string/join
+              ", "
+              (map :name pokemons)))))))
+
+  (println)
+
+  (println
     (str
       "All types: "
       (string/join
