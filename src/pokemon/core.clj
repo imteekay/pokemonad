@@ -2,12 +2,6 @@
   (:require [pokemon.pokemons :as pokemons]
             [clojure.string :as string]))
 
-(defn filter-by
-  [type pokemons]
-  (filter
-    #(= type (:type %))
-    pokemons))
-
 (defn visualize-pokemons-by-type
   [type pokemons-string]
   (str
@@ -19,10 +13,10 @@
 (defn pokemons-by-type
   [type pokemons]
   (->> pokemons
-    (filter-by type)
-    (map :name)
-    (string/join ", ")
-    (visualize-pokemons-by-type type)))
+       (filter #(= type (:type %)))
+       (map :name)
+       (string/join ", ")
+       (visualize-pokemons-by-type type)))
 
 (defn -main []
   (loop [types    (pokemons/types pokemons/pokedex)
