@@ -1,8 +1,9 @@
 (ns pokemon.core
   (:require [pokemon.pokemons :as pokemons]
+            [clojure.pprint :as pprint]
             [clojure.string :as string]))
 
-(defn visualize-pokemons-by-type
+(defn type-with-pokemons
   [type pokemons-string]
   (str
     "\""
@@ -16,7 +17,7 @@
        (filter #(= type (:type %)))
        (map :name)
        (string/join ", ")
-       (visualize-pokemons-by-type type)))
+       (type-with-pokemons type)))
 
 (defn initialize-types
   [result current]
@@ -29,41 +30,51 @@
     (:type current)
     (conj (get result (:type current)) (:name current))))
 
-(defn -main []
-  (loop [types    (pokemons/types pokemons/pokedex)
-         pokemons pokemons/pokedex]
+(defn show-type-with-pokemons
+  [pokemons]
+  (loop [types    (pokemons/types pokemons)
+         pokemons pokemons]
     (when (not-empty types)
       (let [current-type (first types)]
         (println (pokemons-by-type current-type pokemons)))
-      (recur (rest types) pokemons)))
+      (recur (rest types) pokemons))))
 
-  (println)
-
+(defn show-pokemons-grouped-by-type
+  [pokemons]
   (println
     (string/join
       "\n"
-      (let [pokemons-by-type (group-by :type pokemons/pokedex)]
+      (let [pokemons-by-type (group-by :type pokemons)]
         (for [[type pokemons] pokemons-by-type]
           (str
             type
             ": "
             (clojure.string/join
               ", "
-              (map :name pokemons)))))))
+              (map :name pokemons))))))))
 
-  (println)
-
-  (println
+(defn map-type-with-list-of-pokemons
+  [pokemons]
+  (pprint/pprint
     (reduce
       populate-types-with-pokemons
-      (reduce initialize-types {} (pokemons/types pokemons/pokedex))
-      pokemons/pokedex))
+      (reduce initialize-types {} (pokemons/types pokemons))
+      pokemons)))
 
-  (println)
-
+(defn show-all-types
+  [pokemons]
   (println
     (str
       "All types: "
       (string/join
         ", "
-        (pokemons/types pokemons/pokedex)))))
+        (pokemons/types pokemons)))))
+
+(defn -main []
+  (show-type-with-pokemons pokemons/pokedex)
+  (println)
+  (show-pokemons-grouped-by-type pokemons/pokedex)
+  (println)
+  (map-type-with-list-of-pokemons pokemons/pokedex)
+  (println)
+  (show-all-types pokemons/pokedex))
