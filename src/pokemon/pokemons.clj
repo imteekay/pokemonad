@@ -155,7 +155,6 @@
 
 (defn types
   [pokemons]
-  (distinct
-    (map
-      #(:type %)
-      pokemons)))
+  (->> pokemons
+       (map :type)
+       distinct))
