@@ -1,6 +1,5 @@
 (ns pokemon.core
   (:require [pokemon.pokemons :as pokemons]
-            [clojure.pprint :as pprint]
             [clojure.string :as string]))
 
 (defn -main []
