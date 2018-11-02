@@ -18,6 +18,17 @@
        (string/join ", ")
        (visualize-pokemons-by-type type)))
 
+(defn initialize-types
+  [result current]
+  (assoc result current []))
+
+(defn populate-types-with-pokemons
+  [result current]
+  (assoc
+    result
+    (:type current)
+    (conj (get result (:type current)) (:name current))))
+
 (defn -main []
   (loop [types    (pokemons/types pokemons/pokedex)
          pokemons pokemons/pokedex]
@@ -30,7 +41,7 @@
 
   (println
     (string/join
-      "\n\n"
+      "\n"
       (let [pokemons-by-type (group-by :type pokemons/pokedex)]
         (for [[type pokemons] pokemons-by-type]
           (str
@@ -39,6 +50,14 @@
             (clojure.string/join
               ", "
               (map :name pokemons)))))))
+
+  (println)
+
+  (println
+    (reduce
+      populate-types-with-pokemons
+      (reduce initialize-types {} (pokemons/types pokemons/pokedex))
+      pokemons/pokedex))
 
   (println)
 
