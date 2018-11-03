@@ -61,6 +61,14 @@
       (reduce initialize-types {} (pokemons/types pokemons))
       pokemons)))
 
+(defn evolve
+  [pokemons pokemon]
+  (->> pokemons
+       (filter #(= (:evolution-id pokemon) (:id %)))
+       (map :name)
+       (first)
+       (str (:name pokemon) "->")))
+
 (defn show-all-types
   [pokemons]
   (println
@@ -76,5 +84,7 @@
   (show-pokemons-grouped-by-type pokemons/pokedex)
   (println)
   (map-type-with-list-of-pokemons pokemons/pokedex)
+  (println)
+  (pprint/pprint (map (partial evolve pokemons/pokedex) pokemons/pokedex))
   (println)
   (show-all-types pokemons/pokedex))
