@@ -6,10 +6,10 @@
 (defn type-with-pokemons
   [type pokemons-string]
   (str
-    "\""
-    type
-    " pokemons\": "
-    pokemons-string))
+   "\""
+   type
+   " pokemons\": "
+   pokemons-string))
 
 (defn pokemons-by-type
   [type pokemons]
@@ -26,9 +26,9 @@
 (defn populate-types-with-pokemons
   [result current]
   (assoc
-    result
-    (:type current)
-    (conj (get result (:type current)) (:name current))))
+   result
+   (:type current)
+   (conj (get result (:type current)) (:name current))))
 
 (defn show-type-with-pokemons
   [pokemons]
@@ -42,24 +42,24 @@
 (defn show-pokemons-grouped-by-type
   [pokemons]
   (println
-    (string/join
-      "\n"
-      (let [pokemons-by-type (group-by :type pokemons)]
-        (for [[type pokemons] pokemons-by-type]
-          (str
-            type
-            ": "
-            (clojure.string/join
-              ", "
-              (map :name pokemons))))))))
+   (string/join
+    "\n"
+    (let [pokemons-by-type (group-by :type pokemons)]
+      (for [[type pokemons] pokemons-by-type]
+        (str
+         type
+         ": "
+         (clojure.string/join
+          ", "
+          (map :name pokemons))))))))
 
 (defn map-type-with-list-of-pokemons
   [pokemons]
   (pprint/pprint
-    (reduce
-      populate-types-with-pokemons
-      (reduce initialize-types {} (pokemons/types pokemons))
-      pokemons)))
+   (reduce
+    populate-types-with-pokemons
+    (reduce initialize-types {} (pokemons/types pokemons))
+    pokemons)))
 
 (defn evolve
   [pokemons pokemon]
@@ -72,11 +72,11 @@
 (defn show-all-types
   [pokemons]
   (println
-    (str
-      "All types: "
-      (string/join
-        ", "
-        (pokemons/types pokemons)))))
+   (str
+    "All types: "
+    (string/join
+     ", "
+     (pokemons/types pokemons)))))
 
 (defn -main []
   (show-type-with-pokemons pokemons/pokedex)
