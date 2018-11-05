@@ -20,7 +20,7 @@
        (type-with-pokemons type)))
 
 (defn initialize-types
-  [result current]
+  [result current]  
   (assoc result current []))
 
 (defn populate-types-with-pokemons
@@ -65,8 +65,8 @@
   [pokemons pokemon]
   (->> pokemons
        (filter #(= (:evolution-id pokemon) (:id %)))
-       (map :name)
        (first)
+       :name
        (str (:name pokemon) "->")))
 
 (defn show-all-types
