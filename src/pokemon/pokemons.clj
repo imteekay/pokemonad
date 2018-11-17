@@ -1,4 +1,5 @@
-(ns pokemon.pokemons)
+(ns pokemon.pokemons
+  (:require [clojure.string :as string]))
 
 (def pokedex
   [{:id 1   :name "Bulbasaur"  :type "Grass"    :evolution-id 2}
@@ -158,3 +159,45 @@
   (->> pokemons
        (map :type)
        distinct))
+
+(defn type-with-pokemons
+  [type pokemons-string]
+  (str
+   "\""
+   type
+   " pokemons\": "
+   pokemons-string))
+
+(defn pokemons-by-type
+  [type pokemons]
+  (->> pokemons
+       (filter #(= type (:type %)))
+       (map :name)
+       (string/join ", ")
+       (type-with-pokemons type)))
+
+(defn initialize-types
+  [result current]
+  (assoc result current []))
+
+(defn populate-types-with-pokemons
+  [result current]
+  (assoc
+   result
+   (:type current)
+   (conj (get result (:type current)) (:name current))))
+
+(defn map-type-with-list-of-pokemons
+  [pokemons]
+  (reduce
+   populate-types-with-pokemons
+   (reduce initialize-types {} (types pokemons))
+   pokemons))
+
+(defn evolve
+  [pokemons pokemon]
+  (->> pokemons
+       (filter #(= (:evolution-id pokemon) (:id %)))
+       (first)
+       :name
+       (str (:name pokemon) "->")))
